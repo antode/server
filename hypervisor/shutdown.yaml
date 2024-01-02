@@ -1,0 +1,8 @@
+- name: Shutdown
+  hosts: hypervisor
+  vars:
+    ansible_user: root
+
+  tasks:
+    - name: shutdown
+      command: /sbin/shutdown -h now

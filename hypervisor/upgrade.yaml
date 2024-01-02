@@ -1,0 +1,16 @@
+- name: Upgrade
+  hosts: hypervisor
+  vars:
+    ansible_user: root
+
+  tasks:
+    - name: Upgrade all apt packages
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+        autoremove: true
+        clean: true
+      register: apt
+
+    - debug:
+        var: apt

@@ -1,0 +1,13 @@
+- name: List VMs
+  hosts: hypervisor
+  vars:
+    ansible_user: virtualization-admin
+
+  tasks:
+    - name: Get VMs list
+      community.libvirt.virt:
+        command: list_vms
+      register: vms_list
+
+    - debug:
+        var: vms_list

@@ -1,0 +1,8 @@
+- name: Shutdown
+  hosts: hypervisor
+  vars:
+    ansible_user: root
+
+  tasks:
+    - name: reboot the machine
+      ansible.builtin.reboot:
