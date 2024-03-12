@@ -57,6 +57,7 @@
         name:
           - qemu-system-x86
           - libvirt-daemon-system
+          - python3-libvirt
         state: present
 
     - name: Restart libvirtd
