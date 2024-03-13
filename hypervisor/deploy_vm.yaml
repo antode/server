@@ -4,15 +4,24 @@
     ansible_user: virtualization-admin
 
   tasks:
-    # set default network autostart
-
     - name: Copy base image to libvirt directory
       ansible.builtin.copy:
         src: '/home/virtualization-admin/libvirt/images/templates/debian-12-nocloud-amd64.qcow2'
-        dest: '/home/virtualization-admin/libvirt/images/test_vm.qcow2'
+        dest: '/home/virtualization-admin/libvirt/images/pool/test_vm.qcow2'
         force: no
         remote_src: yes
         mode: 0660
       register: copy_results
     - debug:
         var: copy_results
+
+    - name: Define a VM
+      community.libvirt.virt:
+        command: define
+        xml: '{{ lookup("file", "test_vm.xml") }}'
+        autostart: true
+
+    - name: Start a VM
+      community.libvirt.virt:
+        name: test_vm
+        state: running
