@@ -1,4 +1,4 @@
-- name: Deploy VM
+- name: Config storage pools
   hosts: hypervisor
   vars:
     ansible_user: virtualization-admin
@@ -15,7 +15,6 @@
         state: present
         name: filesystem_pool
         xml: '{{ lookup("file", "filesystem_pool.xml") }}'
-        autostart: true
 
     - name: Ensure that a pool is active
       community.libvirt.virt_pool:
@@ -26,14 +25,3 @@
       community.libvirt.virt_pool:
         autostart: true
         name: filesystem_pool
-#    # set default network autostart
-#    - name: Copy base image to libvirt directory
-#      ansible.builtin.copy:
-#        src: '/home/virtualization-admin/libvirt/images/templates/debian-12-nocloud-amd64.qcow2'
-#        dest: '/home/virtualization-admin/libvirt/images/test_vm.qcow2'
-#        force: no
-#        remote_src: yes
-#        mode: 0660
-#      register: copy_results
-#    - debug:
-#        var: copy_results

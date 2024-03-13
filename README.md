@@ -16,6 +16,9 @@
   systemctl reload sshd.service && printf 'sshd.service reloaded!\n\n'
   ```
 
+TODO: добавить информацию по установке сетевого интерфейса,
+нужно уточнить в `hypervisor/files/nat_network.xml` какой интерфейс будет использован
+
 ### Локально
 
 - [ansible](https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html#installing-ansible-on-fedora-linux)
