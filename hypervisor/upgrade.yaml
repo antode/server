@@ -1,7 +1,8 @@
 - name: Upgrade
   hosts: hypervisor
+  become: true
   vars:
-    ansible_user: root
+    ansible_user: admin
 
   tasks:
     - name: Upgrade all apt packages

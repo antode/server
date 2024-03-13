@@ -1,7 +1,8 @@
 - name: Shutdown
   hosts: hypervisor
+  become: true
   vars:
-    ansible_user: root
+    ansible_user: admin
 
   tasks:
     - name: reboot the machine

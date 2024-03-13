@@ -1,46 +1,18 @@
 - name: Install initial configuration
   hosts: hypervisor
+  become: true
   vars:
-    ansible_user: root
+    ansible_user: admin
 
   tasks:
-    - name: Create admin
-      ansible.builtin.user:
-        name: admin
-        comment: User for system administration
-        shell: /bin/bash
-
-    - name: Create user for virtualization management
-      ansible.builtin.user:
-        name: virtualization-admin
-        comment: User for virtualization management
-        groups:
-          - libvirt
-          - kvm
-        shell: /bin/bash
-
-    - name: Set authorized key for admin
-      ansible.posix.authorized_key:
-        user: admin
-        state: present
-        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/personal_id_ed25519.pub') }}"
-
-    - name: Set authorized key for user virtualization-admin
-      ansible.posix.authorized_key:
-        user: virtualization-admin
-        state: present
-        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/personal_id_ed25519.pub') }}"
-
-    - name: Restart sshd
-      ansible.builtin.systemd_service:
-        name: ssh.service
-        state: restarted
-
-    - name: Install tools packages
+    - name: Install packages
       ansible.builtin.apt:
         name:
           - curl
           - python3-lxml
+          - qemu-system-x86
+          - libvirt-daemon-system
+          - python3-libvirt
         state: present
 
     - name: Copy sshd_config
@@ -52,13 +24,25 @@
         mode: '0644'
       tags: init
 
-    - name: Install virtualization packages
-      ansible.builtin.apt:
-        name:
-          - qemu-system-x86
-          - libvirt-daemon-system
-          - python3-libvirt
+    - name: Restart sshd
+      ansible.builtin.systemd_service:
+        name: ssh.service
+        state: restarted
+
+    - name: Create user for virtualization management
+      ansible.builtin.user:
+        name: virtualization-admin
+        comment: User for virtualization management
+        groups:
+          - libvirt
+          - kvm
+        shell: /bin/bash
+
+    - name: Set authorized key for user virtualization-admin
+      ansible.posix.authorized_key:
+        user: virtualization-admin
         state: present
+        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/personal_id_ed25519.pub') }}"
 
     - name: Restart libvirtd
       ansible.builtin.systemd_service:

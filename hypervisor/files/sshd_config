@@ -119,7 +119,3 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 #	AllowTcpForwarding no
 #	PermitTTY no
 #	ForceCommand cvs server
-
-# todo: implement ansible become https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
-Match Address 192.168.0.12
-    PermitRootLogin yes
