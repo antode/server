@@ -1,7 +1,7 @@
 <network>
-    <name>nat_network</name>
+    <name>test_vm_network</name>
     <forward mode="nat"/>
-    <domain name="nat_network"/>
+    <domain name="test_vm_network"/>
     <ip address="192.168.100.1" netmask="255.255.255.0">
         <dhcp>
             <range start="192.168.100.128" end="192.168.100.254"/>

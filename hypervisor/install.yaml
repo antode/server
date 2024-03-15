@@ -13,7 +13,9 @@
           - qemu-system-x86
           - libvirt-daemon-system
           - python3-libvirt
+          - libguestfs-tools
         state: present
+        update_cache: yes
 
     - name: Copy sshd_config
       ansible.builtin.copy:
@@ -22,7 +24,6 @@
         owner: root
         group: root
         mode: '0644'
-      tags: init
 
     - name: Restart sshd
       ansible.builtin.systemd_service:

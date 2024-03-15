@@ -1,6 +1,0 @@
-<pool type="dir">
-    <name>filesystem_pool</name>
-    <target>
-        <path>/home/virtualization-admin/libvirt/images/pool</path>
-    </target>
-</pool>

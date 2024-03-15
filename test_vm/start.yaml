@@ -1,0 +1,20 @@
+- name: Start VM
+  hosts: hypervisor
+  vars:
+    ansible_user: virtualization-admin
+
+  tasks:
+    - name: Ensure that network is active
+      community.libvirt.virt_net:
+        state: active
+        name: test_vm_network
+
+    - name: Ensure that pool is active
+      community.libvirt.virt_pool:
+        state: active
+        name: test_vm_pool
+
+    - name: Ensure that VM is running
+      community.libvirt.virt:
+        state: running
+        name: test_vm

@@ -32,7 +32,7 @@
         <emulator>/usr/bin/qemu-system-x86_64</emulator>
         <disk type="file" device="disk">
             <driver name="qemu" type="qcow2"/>
-            <source file="/home/virtualization-admin/libvirt/images/pool/test_vm.qcow2"/>
+            <source file="/home/virtualization-admin/libvirt/pools/test_vm/test_vm.qcow2"/>
             <target dev="vda" bus="virtio"/>
         </disk>
         <controller type="usb" model="qemu-xhci" ports="15"/>
@@ -52,7 +52,7 @@
         <controller type="pci" model="pcie-root-port"/>
         <controller type="pci" model="pcie-root-port"/>
         <interface type="network">
-            <source network="nat_network"/>
+            <source network="test_vm_network"/>
             <mac address="52:54:00:5f:45:c8"/>
             <model type="virtio"/>
         </interface>

@@ -6,4 +6,4 @@
 
   tasks:
     - name: shutdown
-      command: /sbin/shutdown -h now
+      ansible.builtin.command: /sbin/shutdown -h now
