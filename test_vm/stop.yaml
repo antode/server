@@ -9,11 +9,6 @@
         state: shutdown
         name: test_vm
 
-    - name: Ensure that network is inactive
-      community.libvirt.virt_net:
-        state: inactive
-        name: test_vm_network
-
     - name: Ensure that pool is inactive
       community.libvirt.virt_pool:
         state: inactive

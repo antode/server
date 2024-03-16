@@ -14,11 +14,6 @@
         command: undefine
         name: test_vm
 
-    - name: Undefine network
-      community.libvirt.virt_net:
-        state: absent
-        name: test_vm_network
-
     - name: Undefine pool
       community.libvirt.virt_pool:
         state: absent

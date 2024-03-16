@@ -14,8 +14,22 @@
           - libvirt-daemon-system
           - python3-libvirt
           - libguestfs-tools
+          - bridge-utils
         state: present
         update_cache: yes
+
+    - name: Copy network interfaces config
+      ansible.builtin.copy:
+        src: interfaces
+        dest: /etc/network/interfaces
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Restart networking
+      ansible.builtin.systemd_service:
+        name: networking.service
+        state: restarted
 
     - name: Copy sshd_config
       ansible.builtin.copy:
@@ -49,3 +63,19 @@
       ansible.builtin.systemd_service:
         name: libvirtd.service
         state: restarted
+
+    - name: Ensure that base images path exist
+      file:
+        path: '/home/virtualization-admin/libvirt/images'
+        state: directory
+        mode: u=rwx,g=rx,o=rx
+        owner: virtualization-admin
+        group: virtualization-admin
+
+    - name: Download base image
+      ansible.builtin.get_url:
+        url: https://cloud.debian.org/images/cloud/bookworm/20240211-1654/debian-12-nocloud-amd64-20240211-1654.qcow2
+        dest: /home/virtualization-admin/libvirt/images/debian-12-nocloud-amd64.qcow2
+        mode: u=rwx,g=rx,o=rx
+        owner: virtualization-admin
+        group: virtualization-admin

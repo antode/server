@@ -4,17 +4,6 @@
     ansible_user: virtualization-admin
 
   tasks:
-    - name: Ensure that network is present
-      community.libvirt.virt_net:
-        state: present
-        name: test_vm_network
-        xml: '{{ lookup("file", "test_vm_network.xml") }}'
-
-    - name: Ensure that network will be started at boot
-      community.libvirt.virt_net:
-        autostart: true
-        name: test_vm_network
-
     - name: Ensure that storage pool path exist
       file:
         mode: u=rwx,g=rx,o=rx

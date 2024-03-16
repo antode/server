@@ -51,10 +51,11 @@
         <controller type="pci" model="pcie-root-port"/>
         <controller type="pci" model="pcie-root-port"/>
         <controller type="pci" model="pcie-root-port"/>
-        <interface type="network">
-            <source network="test_vm_network"/>
+        <interface type="bridge">
             <mac address="52:54:00:5f:45:c8"/>
+            <source bridge="br0"/>
             <model type="virtio"/>
+            <address type="pci" domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
         </interface>
         <console type="pty"/>
         <channel type="unix">
