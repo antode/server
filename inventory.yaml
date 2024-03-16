@@ -1,4 +1,6 @@
 main:
   hosts:
     hypervisor:
-      ansible_host: 192.168.0.128
+      ansible_host: '192.168.0.128'
+    gitea-vm:
+      ansible_host: '192.168.0.129'

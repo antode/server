@@ -1,0 +1,47 @@
+- name: 'Uninstall VM'
+  hosts: 'hypervisor'
+  vars:
+    ansible_user: 'virtualization-admin'
+
+  tasks:
+    - name: 'Check that VM exists'
+      shell: "virsh --connect qemu:///system domstate gitea-vm >/dev/null 2>&1 && echo 'yes' || echo 'no'"
+      register: 'vm_exists'
+      changed_when: false
+
+    - name: 'Destroy VM'
+      when: "vm_exists.stdout == 'yes'"
+      community.libvirt.virt:
+        state: 'destroyed'
+        name: 'gitea-vm'
+
+    - name: 'Undefine VM'
+      when: "vm_exists.stdout == 'yes'"
+      community.libvirt.virt:
+        command: 'undefine'
+        name: 'gitea-vm'
+
+    - name: 'Undefine pool'
+      community.libvirt.virt_pool:
+        state: 'absent'
+        name: 'gitea-vm-pool'
+
+    - name: 'Remove VM disk image'
+      ansible.builtin.file:
+        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/gitea-vm.qcow2'
+        state: 'absent'
+
+    - name: 'Remove VM disk image'
+      ansible.builtin.file:
+        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/cidata.iso'
+        state: 'absent'
+
+    - name: 'Remove VM disk image'
+      ansible.builtin.file:
+        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/meta-data'
+        state: 'absent'
+
+    - name: 'Remove VM disk image'
+      ansible.builtin.file:
+        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/user-data'
+        state: 'absent'

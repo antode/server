@@ -5,7 +5,8 @@ set -Eeuo pipefail;
 printf '\n\nInstall packages...\n'
 apt-get install --yes sudo openssh-server python3
 
-useradd --groups sudo --shell /bin/bash --create-home admin && printf '\n\nUser created!\n\n'
+useradd --groups sudo --shell /bin/bash --create-home admin
+printf '\n\nUser created!\n\n'
 passwd admin
 
 sed --in-place='.backup' --regexp-extended "s/^.+PasswordAuthentication.+$/PasswordAuthentication yes/" /etc/ssh/sshd_config

@@ -1,0 +1,22 @@
+- name: 'Start VM'
+  hosts: 'gitea-vm'
+  vars:
+    ansible_user: 'podman-admin'
+
+  tasks:
+    - name: 'Pull an image'
+      containers.podman.podman_image:
+        name: 'docker.io/gitea/gitea:1.21.7-rootless'
+
+    - name: 'Ensure that container is running'
+      containers.podman.podman_container:
+        name: 'gitea'
+        image: 'docker.io/gitea/gitea:1.21.7-rootless'
+        state: 'started'
+        ports:
+          - '3000:3000'
+          - '2222:2222'
+        volumes:
+          - 'data:/var/lib/gitea'
+          - 'config:/etc/gitea'
+        restart_policy: 'always'

@@ -25,16 +25,13 @@
 
 - С повышением привилегий
   ```shell
-  ansible-playbook -i ./inventory.yaml --ask-become-pass ./hypervisor/install.yaml
+  ansible-playbook -i ./inventory.yaml --ask-become-pass ./virtualization/hypervisor/install.yaml
   ```
 - Обычного
   ```shell
-  ansible-playbook -i ./inventory.yaml ./test_vm/install.yaml
+  ansible-playbook -i ./inventory.yaml ./virtualization/gitea-vm/install.yaml
   ```
 
 # TODO
 
-- Разобраться с инициализацией сети хоста
-- Разобраться с сетью в гостевой системе
-- Добавить и привести в порядок debug
-- Установить SSH в гостевую систему
+- ...

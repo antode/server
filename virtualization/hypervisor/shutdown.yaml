@@ -1,0 +1,9 @@
+- name: 'Shutdown'
+  hosts: 'hypervisor'
+  become: true
+  vars:
+    ansible_user: 'admin'
+
+  tasks:
+    - name: 'shutdown'
+      ansible.builtin.command: '/sbin/shutdown -h now'

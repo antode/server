@@ -1,0 +1,6 @@
+<pool type="dir">
+    <name>gitea-vm-pool</name>
+    <target>
+        <path>{{ vm_pool_dir }}</path>
+    </target>
+</pool>

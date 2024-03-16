@@ -1,0 +1,21 @@
+- name: 'Start VM'
+  hosts: 'hypervisor'
+  vars:
+    ansible_user: 'virtualization-admin'
+
+  tasks:
+    - name: 'Define VM'
+      community.libvirt.virt:
+        command: 'define'
+        xml: '{{ lookup("file", "gitea-vm.xml") }}'
+        autostart: true
+
+    - name: 'Ensure that pool is active'
+      community.libvirt.virt_pool:
+        state: 'active'
+        name: 'gitea-vm-pool'
+
+    - name: 'Ensure that VM is running'
+      community.libvirt.virt:
+        state: 'running'
+        name: 'gitea-vm'

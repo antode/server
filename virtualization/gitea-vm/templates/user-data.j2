@@ -1,0 +1,11 @@
+#cloud-config
+
+# Users
+users:
+  - name: server-admin
+    ssh_authorized_keys:
+      - {{ lookup('file', lookup('env','HOME') + '/.ssh/personal_id_ed25519.pub') }}
+    groups: sudo
+    shell: /bin/bash
+    hashed_passwd: $6$rounds=500000$mwvxIy5wAAsRELty$mE2.92c6ito4Uz5eTjXhJ8.o6eWKwD7J4FNFppcCgdtJOAnN74D7pVhzQNFITOS5BQmd9uWB.K6/dSZQOp4Bj.
+    lock_passwd: false

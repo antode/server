@@ -1,0 +1,22 @@
+- name: 'Start VM'
+  hosts: 'gitea-vm'
+  vars:
+    ansible_user: 'podman-admin'
+
+  tasks:
+    - name: 'Gather facts for all containers'
+      containers.podman.podman_container_info:
+      register: 'containers_info'
+
+    - name: 'Ensure that all containers is absent'
+      containers.podman.podman_container:
+        name: '{{ item.Name }}'
+        state: 'absent'
+      loop: "{{ containers_info.containers }}"
+      no_log: true
+
+    - name: 'Prune everything (including non-dangling images)'
+      containers.podman.podman_prune:
+        system: true
+        system_all: true
+        system_volumes: true
