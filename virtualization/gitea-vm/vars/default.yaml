@@ -1,0 +1,13 @@
+base_image_path: '/home/virtualization-admin/libvirt/images/debian-12-generic-amd64.qcow2'
+
+vm_name: 'gitea-vm'
+vm_pool_name: 'gitea-vm-pool'
+vm_pool_dir: '/home/virtualization-admin/libvirt/pools/gitea-vm-pool'
+vm_disk_image_path: '/home/virtualization-admin/libvirt/pools/gitea-vm-pool/gitea-vm-disk.qcow2'
+
+cloud_init_user_data_path: '/home/virtualization-admin/libvirt/pools/gitea-vm-pool/user-data'
+cloud_init_meta_data_path: '/home/virtualization-admin/libvirt/pools/gitea-vm-pool/meta-data'
+cloud_init_network_config_path: '/home/virtualization-admin/libvirt/pools/gitea-vm-pool/network-config'
+cloud_init_image_path: '/home/virtualization-admin/libvirt/pools/gitea-vm-pool/cidata.iso'
+
+vm_ip_address: '192.168.0.129/24'

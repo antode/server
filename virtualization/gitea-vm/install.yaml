@@ -2,9 +2,8 @@
   hosts: 'hypervisor'
   vars:
     ansible_user: 'virtualization-admin'
-    vm_pool_dir: '/home/virtualization-admin/libvirt/pools/gitea-vm'
-    vm_disk_image_path: '/home/virtualization-admin/libvirt/pools/gitea-vm/gitea-vm.qcow2'
-    base_image_path: '/home/virtualization-admin/libvirt/images/debian-12-generic-amd64.qcow2'
+  vars_files:
+    - 'vars/default.yaml'
 
   tasks:
     - name: 'Ensure that storage pool path exist'
@@ -16,31 +15,31 @@
     - name: 'Ensure that pool is present'
       community.libvirt.virt_pool:
         state: 'present'
-        name: 'gitea-vm-pool'
-        xml: '{{ lookup("ansible.builtin.template", "gitea-vm-pool.xml") }}'
+        name: '{{ vm_pool_name }}'
+        xml: '{{ lookup("template", "vm-pool.xml") }}'
 
     - name: 'Ensure that pool will be started at boot'
       community.libvirt.virt_pool:
         autostart: true
-        name: 'gitea-vm-pool'
+        name: '{{ vm_pool_name }}'
 
     - name: 'Create VM disk image'
       ansible.builtin.shell: '/usr/bin/qemu-img create -b {{ base_image_path }} -f qcow2 -F qcow2 {{ vm_disk_image_path }} 8G'
 
     - name: 'Create cloud-init user-data'
       template:
-        src: 'user-data.j2'
-        dest: '{{ vm_pool_dir }}/user-data'
+        src: 'user-data.yaml.j2'
+        dest: '{{ cloud_init_user_data_path }}'
 
     - name: 'Create cloud-init meta-data'
       template:
-        src: 'meta-data.j2'
-        dest: '{{ vm_pool_dir }}/meta-data'
+        src: 'meta-data.yaml.j2'
+        dest: '{{ cloud_init_meta_data_path }}'
 
     - name: 'Create cloud-init network-config'
       template:
-        src: 'network-config.j2'
-        dest: '{{ vm_pool_dir }}/network-config'
+        src: 'network-config.yaml.j2'
+        dest: '{{ cloud_init_network_config_path }}'
 
     - name: 'Create cloud-init configuration image'
-      command: 'genisoimage -output {{ vm_pool_dir }}/cidata.iso -V cidata -r -J {{ vm_pool_dir }}/user-data {{ vm_pool_dir }}/meta-data {{ vm_pool_dir }}/network-config'
+      command: 'genisoimage -output {{ cloud_init_image_path }} -V cidata -r -J {{ cloud_init_user_data_path }} {{ cloud_init_meta_data_path }} {{ cloud_init_network_config_path }}'

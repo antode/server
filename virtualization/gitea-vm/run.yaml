@@ -2,20 +2,22 @@
   hosts: 'hypervisor'
   vars:
     ansible_user: 'virtualization-admin'
+  vars_files:
+    - 'vars/default.yaml'
 
   tasks:
     - name: 'Define VM'
       community.libvirt.virt:
         command: 'define'
-        xml: '{{ lookup("file", "gitea-vm.xml") }}'
+        xml: '{{ lookup("template", "vm.xml.j2") }}'
         autostart: true
 
     - name: 'Ensure that pool is active'
       community.libvirt.virt_pool:
         state: 'active'
-        name: 'gitea-vm-pool'
+        name: '{{ vm_pool_name }}'
 
     - name: 'Ensure that VM is running'
       community.libvirt.virt:
         state: 'running'
-        name: 'gitea-vm'
+        name: '{{ vm_name }}'

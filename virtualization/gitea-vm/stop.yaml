@@ -2,14 +2,16 @@
   hosts: 'hypervisor'
   vars:
     ansible_user: 'virtualization-admin'
+  vars_files:
+    - 'vars/default.yaml'
 
   tasks:
     - name: 'Ensure that VM is shutdown'
       community.libvirt.virt:
         state: 'shutdown'
-        name: 'gitea-vm'
+        name: '{{ vm_name }}'
 
     - name: 'Ensure that pool is inactive'
       community.libvirt.virt_pool:
         state: 'inactive'
-        name: 'gitea-vm-pool'
+        name: '{{ vm_pool_name }}'

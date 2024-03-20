@@ -2,10 +2,12 @@
   hosts: 'hypervisor'
   vars:
     ansible_user: 'virtualization-admin'
+  vars_files:
+    - 'vars/default.yaml'
 
   tasks:
     - name: 'Check that VM exists'
-      shell: "virsh --connect qemu:///system domstate gitea-vm >/dev/null 2>&1 && echo 'yes' || echo 'no'"
+      shell: "virsh --connect qemu:///system domstate {{ vm_name }} >/dev/null 2>&1 && echo 'yes' || echo 'no'"
       register: 'vm_exists'
       changed_when: false
 
@@ -13,35 +15,40 @@
       when: "vm_exists.stdout == 'yes'"
       community.libvirt.virt:
         state: 'destroyed'
-        name: 'gitea-vm'
+        name: '{{ vm_name }}'
 
     - name: 'Undefine VM'
       when: "vm_exists.stdout == 'yes'"
       community.libvirt.virt:
         command: 'undefine'
-        name: 'gitea-vm'
+        name: '{{ vm_name }}'
 
     - name: 'Undefine pool'
       community.libvirt.virt_pool:
         state: 'absent'
-        name: 'gitea-vm-pool'
+        name: '{{ vm_pool_name }}'
 
     - name: 'Remove VM disk image'
       ansible.builtin.file:
-        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/gitea-vm.qcow2'
+        path: '{{ vm_disk_image_path }}'
         state: 'absent'
 
-    - name: 'Remove VM disk image'
+    - name: 'Remove cloud-init disk image'
       ansible.builtin.file:
-        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/cidata.iso'
+        path: '{{ cloud_init_image_path }}'
         state: 'absent'
 
-    - name: 'Remove VM disk image'
+    - name: 'Remove cloud-init user-data'
       ansible.builtin.file:
-        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/meta-data'
+        path: '{{ cloud_init_user_data_path }}'
         state: 'absent'
 
-    - name: 'Remove VM disk image'
+    - name: 'Remove cloud-init meta-data'
       ansible.builtin.file:
-        path: '/home/virtualization-admin/libvirt/pools/gitea-vm/user-data'
+        path: '{{ cloud_init_meta_data_path }}'
+        state: 'absent'
+
+    - name: 'Remove cloud-init network-config'
+      ansible.builtin.file:
+        path: '{{ cloud_init_network_config_path }}'
         state: 'absent'

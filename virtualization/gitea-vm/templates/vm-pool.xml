@@ -1,5 +1,5 @@
 <pool type="dir">
-    <name>gitea-vm-pool</name>
+    <name>{{ vm_pool_name }}</name>
     <target>
         <path>{{ vm_pool_dir }}</path>
     </target>

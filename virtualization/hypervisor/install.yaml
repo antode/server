@@ -81,10 +81,18 @@
         owner: 'virtualization-admin'
         group: 'virtualization-admin'
 
-    - name: 'Download base generic image' # https://cloud.debian.org/images/cloud/
+    - name: 'Download base Debian cloud image' # https://cloud.debian.org/images/cloud/
       ansible.builtin.get_url:
         url: 'https://cloud.debian.org/images/cloud/bookworm/20240211-1654/debian-12-generic-amd64-20240211-1654.qcow2'
         dest: '/home/virtualization-admin/libvirt/images/debian-12-generic-amd64.qcow2'
+        mode: 'u=rwx,g=rx,o=rx'
+        owner: 'virtualization-admin'
+        group: 'virtualization-admin'
+
+    - name: 'Download base Ubuntu cloud image' # https://cloud.debian.org/images/cloud/
+      ansible.builtin.get_url:
+        url: 'https://cloud-images.ubuntu.com/daily/server/jammy/20240319/jammy-server-cloudimg-amd64-disk-kvm.img'
+        dest: '/home/virtualization-admin/libvirt/images/jammy-server-cloudimg-amd64-disk-kvm.img'
         mode: 'u=rwx,g=rx,o=rx'
         owner: 'virtualization-admin'
         group: 'virtualization-admin'

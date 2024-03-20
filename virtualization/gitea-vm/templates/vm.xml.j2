@@ -1,5 +1,5 @@
 <domain type="kvm">
-    <name>gitea-vm</name>
+    <name>{{ vm_name }}</name>
     <metadata>
         <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
             <libosinfo:os id="http://debian.org/debian/12"/>
@@ -7,7 +7,7 @@
     </metadata>
     <memory>524288</memory>
     <currentMemory>524288</currentMemory>
-    <vcpu>2</vcpu>
+    <vcpu>1</vcpu>
     <os>
         <type arch="x86_64" machine="q35">hvm</type>
         <boot dev="hd"/>
@@ -23,12 +23,12 @@
         <emulator>/usr/bin/qemu-system-x86_64</emulator>
         <disk type="file" device="disk">
             <driver name="qemu" type="qcow2"/>
-            <source file="/home/virtualization-admin/libvirt/pools/gitea-vm/gitea-vm.qcow2"/>
+            <source file="{{ vm_disk_image_path }}"/>
             <target dev="vda" bus="virtio"/>
         </disk>
         <disk type="file" device="cdrom">
             <driver name="qemu" type="raw"/>
-            <source file="/home/virtualization-admin/libvirt/pools/gitea-vm/cidata.iso"/>
+            <source file="{{ cloud_init_image_path }}"/>
             <target dev="sda" bus="sata"/>
         </disk>
         <interface type="bridge">
